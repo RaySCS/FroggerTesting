@@ -98,7 +98,7 @@ function drawDashed() {
 //initialize functions onload
 function initialize(){
     console.log("called");
-    frog = createImage(frog.src, 300,500,50,50);
+    frogPict = createImage(frog.src, 300,500,50,50);
     drawBackground();
     // createCars();
 
@@ -146,19 +146,19 @@ $(document).keydown(function(event){  //jQuery code to recognize a keydown event
     //a key to go left
     if(keycode == 65)//a
     {
-        frogX-=25;
+        frogPict.left-=25;
     }
     //d key to go right
     if(keycode == 68)
     {
-            frogX+=25;
+        frogPict.left+=25
     }
     if(keycode==87) {
-        frogY -= 50
+        frogPict.top-=25;
     }
     if(keycode==83)
     {
-        frogY+=50
+        frogPict.top+=25;
     }
 });
 
@@ -169,12 +169,12 @@ function animate() {
     if (gameOn==true) {
         document.getElementById("lives").innerHTML = "Lives Remaining:" + lives;
         document.getElementById("score").innerHTML = "Score:" + points;
+        drawFrog();
         moveCarsRight();
         moveCarsLeft();
         checkFrogs();
         checkLives();
         FinishLine();
-        drawFrog();
         // startAnimation();
         for (i = 0; i < car2Array.length; i++) {
             checkRightCars(car2Array[i]);
@@ -213,7 +213,7 @@ function animate() {
 
 function drawFrog(){
     var ctx = document.getElementById("canvas").getContext("2d");
-    ctx.drawImage(frog,frog.left,frog.top,frog.width,frog.height);
+    ctx.drawImage(frogPict,frogPict.left,frogPict.top,frogPict.width,frogPict.height);
     // ctx.drawImage(frogPict,frogPict.left,frogPict.top,frogPict.width,frogPict.height);
 
 }
