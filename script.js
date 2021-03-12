@@ -97,10 +97,10 @@ function drawDashed() {
 
 //initialize functions onload
 function initialize(){
+    drawBackground();
     console.log("called");
     frogPict = createImage(frog.src, 300,800,50,50);
-    drawBackground();
-    // createCars();
+    createCars();
 
 }
 //You may or may not need this function.  Remember you can add other properties inside the function if you want.
@@ -127,6 +127,7 @@ var createImage = function(src,xco,yco,w,h) {
     return img;
 };
 
+var userScore = 0;
 /*
 this code allows you to use the keyboard.  It is written in Jquery.  Jquery is version of javascript that is downloaded
 as a library.  The download line is in the header of the html.  Each of the keycodes below can be found in the
@@ -146,36 +147,39 @@ $(document).keydown(function(event){  //jQuery code to recognize a keydown event
     //a key to go left
     if(keycode == 65)//a
     {
-        frogPict.left-=25;
+        frogPict.left-=50;
     }
     //d key to go right
     if(keycode == 68)
     {
-        frogPict.left+=25
+        frogPict.left+=50
     }
     if(keycode==87) {
-        frogPict.top-=25;
+        frogPict.top-=50;
+        userScore+=10;
+        document.getElementById("score").innerHTML = "Score: " + userScore;
     }
     if(keycode==83)
     {
-        frogPict.top+=25;
+        frogPict.top+=50;
     }
 });
 
 //Anything that needs to be drawn on the screen should be in this function.  Make sure it is abstracted
 function animate() {
+    drawBackground();
     a=requestAnimationFrame(animate);
-    createCars();
+    //createCars();
     if (gameOn==true) {
         document.getElementById("lives").innerHTML = "Lives Remaining:" + lives;
         document.getElementById("score").innerHTML = "Score:" + points;
-        drawBackground();
         drawFrog();
         moveCarsRight();
         moveCarsLeft();
         checkFrogs();
         checkLives();
         FinishLine();
+        drawCars();
         // startAnimation();
         for (i = 0; i < car2Array.length; i++) {
             checkRightCars(car2Array[i]);
@@ -234,39 +238,47 @@ function checkFrogs(){
 }
 //you will need functions to draw and move all of your cars, logs, etc...
 
+function drawCars(){
+    var ctx = document.getElementById("canvas").getContext("2d");
+    for(i=0;i<car1Array.length;i++){
+        ctx.drawImage(car1Array[i],car1Array[i].left,car1Array[i].top,car1Array[i].width,car1Array[i].height);
+    }
+    for(i=0;i<car2Array.length;i++){
+        ctx.drawImage(car2Array[i],car2Array[i].left,car2Array[i].top,car2Array[i].width,car2Array[i].height);
+    }
+
+    for(i=0;i<car3Array.length;i++){
+        ctx.drawImage(car3Array[i],car3Array[i].left,car3Array[i].top,car3Array[i].width,car3Array[i].height);
+    }
+    for(i=0;i<car4Array.length;i++){
+        ctx.drawImage(car4Array[i],car4Array[i].left,car4Array[i].top,car4Array[i].width,car4Array[i].height);
+    }
+}
+
 function createCars() {
     var ctx = document.getElementById("canvas").getContext("2d");
     car1Array.push(createImage(car1.src,600,750,50,50));
     car1Array.push(createImage(car1.src,800,750,50,50));
     car1Array.push(createImage(car1.src,1000,750,50,50));
     car1Array.push(createImage(car1.src,1200,750,50,50));
-        for(i=0;i<car1Array.length;i++){
-            ctx.drawImage(car1Array[i],car1Array[i].left,car1Array[i].top,car1Array[i].width,car1Array[i].height);
-        }
+
 
     car2Array.push(createImage(car2.src,0,650,50,50));
     car2Array.push(createImage(car2.src,-200,650,50,50));
     car2Array.push(createImage(car2.src,-400,650,50,50));
     car2Array.push(createImage(car2.src,-600,650,50,50));
-    for(i=0;i<car2Array.length;i++){
-        ctx.drawImage(car2Array[i],car2Array[i].left,car2Array[i].top,car2Array[i].width,car2Array[i].height);
-    }
 
     car3Array.push(createImage(car3.src,600,600,50,50));
     car3Array.push(createImage(car3.src,900,600,50,50));
     car3Array.push(createImage(car3.src,1200,600,50,50));
     car3Array.push(createImage(car3.src,1500,600,50,50));
-    for(i=0;i<car3Array.length;i++){
-        ctx.drawImage(car3Array[i],car3Array[i].left,car3Array[i].top,car3Array[i].width,car3Array[i].height);
-    }
+
 
     car4Array.push(createImage(car4.src,0,750,50,50));
     car4Array.push(createImage(car4.src,-200,550,50,50));
     car4Array.push(createImage(car4.src,-400,550,50,50));
     car4Array.push(createImage(car4.src,-600,550,50,50));
-    for(i=0;i<car4Array.length;i++){
-        ctx.drawImage(car4Array[i],car4Array[i].left,car4Array[i].top,car4Array[i].width,car4Array[i].height);
-    }
+
 }
 
 
@@ -351,13 +363,13 @@ function restartGame(){
 }
 
 function checkCollisions(p1,p2){
- if(p1.left+p1.width>p2.left && p1.left<p2.left+p2.width&& p1.top+p1.height>p2.top&& p1.top<p2.top+p2.height&&p1.vis==true && p2.vis==true){
-     frogPict.top = 800;
-     frogPict.left = 300;
-     lives=lives-1;
-     document.getElementById("lives").innerHTML = "Lives Remaining:" + lives;
-     reset();
- }
+     if(p1.left+p1.width>p2.left && p1.left<p2.left+p2.width&& p1.top+p1.height>p2.top&& p1.top<p2.top+p2.height&&p1.vis==true && p2.vis==true){
+         frogPict.top = 800;
+         frogPict.left = 300;
+         lives=lives-1;
+         document.getElementById("lives").innerHTML = "Lives Remaining:" + lives;
+         reset();
+     }
 }
 
 //this function may be helpful.  You should understand it and be able to make it on your own.
