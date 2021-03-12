@@ -98,7 +98,7 @@ function drawDashed() {
 //initialize functions onload
 function initialize(){
     console.log("called");
-    frogPict = createImage(frog.src, 300,500,50,50);
+    frogPict = createImage(frog.src, 300,800,50,50);
     drawBackground();
     // createCars();
 
@@ -169,6 +169,7 @@ function animate() {
     if (gameOn==true) {
         document.getElementById("lives").innerHTML = "Lives Remaining:" + lives;
         document.getElementById("score").innerHTML = "Score:" + points;
+        drawBackground();
         drawFrog();
         moveCarsRight();
         moveCarsLeft();
