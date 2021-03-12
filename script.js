@@ -328,6 +328,14 @@ function checkLives(){
     if(lives==0){
         gameOn=false;
         alert("you lost boooooo! Press restart to go again!");
+        //code that makes black screen below
+        var ctx = document.getElementById("canvas").getContext("2d");
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0,0,650,650);
+        ctx.fillStyle = "#FFFF13";
+        ctx.font = "35px Arial";
+        ctx.fillText("YOU LOSE!", 200, 325);
+        ctx.fillText("CLICK THE RESET BUTTON", 110, 370);
     }
     if (gameOn==false);{
         document.getElementById("restart").disabled=false;
@@ -344,9 +352,11 @@ function restartGame(){
 
 function checkCollisions(p1,p2){
  if(p1.left+p1.width>p2.left && p1.left<p2.left+p2.width&& p1.top+p1.height>p2.top&& p1.top<p2.top+p2.height&&p1.vis==true && p2.vis==true){
-     frogX=300;
-     frogY=800;
+     frogPict.top = 800;
+     frogPict.left = 300;
      lives=lives-1;
+     document.getElementById("lives").innerHTML = "Lives Remaining:" + lives;
+     reset();
  }
 }
 
@@ -357,6 +367,7 @@ function getRandomInt(min, max) { //return random int
 
 //Having a reset function allows the user to play again.
 function reset() { //resets left and top values of frog, but doesn't redraw it
+    var ctx = document.getElementById("canvas").getContext("2d");
 
 }
 
