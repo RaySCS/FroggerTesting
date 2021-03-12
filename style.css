@@ -1,0 +1,17 @@
+canvas {
+    border-style: solid;
+    border-width: 2px;
+    border-color: #010101;
+}
+body {
+    text-align: center;
+    background-color: #a7fffd;
+
+}
+
+h1 {
+    color: #8122af;
+    font-family: "Andale Mono";
+}
+
+
