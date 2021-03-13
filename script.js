@@ -156,12 +156,14 @@ $(document).keydown(function(event){  //jQuery code to recognize a keydown event
     }
     if(keycode==87) {
         frogPict.top-=50;
-        userScore+=10;
+        userScore+=10;//increase when move forward
         document.getElementById("score").innerHTML = "Score: " + userScore;
     }
     if(keycode==83)
     {
         frogPict.top+=50;
+        userScore-=10;//decrease when step back
+        document.getElementById("score").innerHTML = "Score: " + userScore;
     }
 });
 
@@ -171,8 +173,8 @@ function animate() {
     a=requestAnimationFrame(animate);
     //createCars();
     if (gameOn==true) {
-        document.getElementById("lives").innerHTML = "Lives Remaining:" + lives;
-        document.getElementById("score").innerHTML = "Score:" + points;
+        document.getElementById("lives").innerHTML = "Lives Remaining: " + lives;
+        document.getElementById("score").innerHTML = "Score:" + userScore;
         drawFrog();
         moveCarsRight();
         moveCarsLeft();
@@ -328,11 +330,17 @@ function checkLeftCars(leftcars){
     }
 }
 
+var counter = 0;
 function FinishLine(){
-    if(frogY<500){
+    if(frogPict.top<200){
+        counter++;
+        // alert("you have won!");
         points=points+1;
         frogX=300;
         frogY=800;
+
+        console.log(points);
+
     }
 }
 
@@ -358,7 +366,9 @@ function checkLives(){
 function restartGame(){
     gameOn=true;
     lives=3;
-    points=0;
+    userScore=0;
+    document.getElementById("lives").innerHTML = "Lives Remaining: " + lives;
+    document.getElementById("score").innerHTML = "Score:" + userScore;
     document.getElementById("restart").disabled=true;
 }
 
