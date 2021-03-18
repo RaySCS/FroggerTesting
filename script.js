@@ -1,5 +1,5 @@
 var car1 = new Image();
-car1.src = "resources/car1.png"; //need this to simply load the image into the browsers memory
+car1.src = "resources/car1.png";
 var car2 = new Image();
 car2.src = "resources/car2.png";
 var car3 = new Image();
@@ -10,7 +10,7 @@ car4.src = "resources/car4.png";
 var log1 = new Image();
 log1.src = "resources/log.png";
 var log2 = new Image();
-log2.src = "resources/log2.png";
+log2.src = "resources/log.png";
 
 var frog = new Image();
 frog.src = "resources/frog.png";
@@ -32,11 +32,16 @@ lilypad.src = "resources/lilypad.png";
 var a;
 var lives = 3;
 var points=0;
-var livesArray = [];
+//var livesArray = [];
 var car1Array = [car1];
 var car2Array = [car2];
 var car3Array = [car3];
 var car4Array = [car4];
+var log1Array = [log1];
+var log2Array = [log2];
+var log3Array = [log2];
+var log4Array = [log2];
+
 var gameOn=true;
 
 
@@ -101,6 +106,7 @@ function initialize(){
     console.log("called");
     frogPict = createImage(frog.src, 300,800,50,50);
     createCars();
+    createLogs();
 
 }
 //You may or may not need this function.  Remember you can add other properties inside the function if you want.
@@ -175,13 +181,19 @@ function animate() {
     if (gameOn==true) {
         document.getElementById("lives").innerHTML = "Lives Remaining: " + lives;
         document.getElementById("score").innerHTML = "Score:" + userScore;
+        boundaryCheck();
         drawFrog();
         moveCarsRight();
         moveCarsLeft();
+        moveLogsRight();
+        // moveLogsLeft();
         checkFrogs();
         checkLives();
         FinishLine();
         drawCars();
+        drawLogs();
+        logCollisionCheck();
+        waterCollisionChecker();
         // startAnimation();
         for (i = 0; i < car2Array.length; i++) {
             checkRightCars(car2Array[i]);
@@ -226,8 +238,7 @@ function drawFrog(){
 }
 
 function startAnimation() {
-        alert("cliclked");
-        animate();
+    animate();
     document.getElementById("start").disabled = true;
 
 }
@@ -256,6 +267,81 @@ function drawCars(){
         ctx.drawImage(car4Array[i],car4Array[i].left,car4Array[i].top,car4Array[i].width,car4Array[i].height);
     }
 }
+function createLogs(){
+    var ctx = document.getElementById("canvas").getContext("2d");
+
+    //we need four stacks of logs
+    //top, middle1, middle2, and then the bottoms
+
+
+
+    log1Array.push(createImage(log1.src,0,250,50,50));
+    log1Array.push(createImage(log1.src,0,300,50,50));
+    log1Array.push(createImage(log1.src,0,350,50,50));
+    log1Array.push(createImage(log1.src,0,400,50,50));
+    log1Array.push(createImage(log1.src,0,450,50,50));
+
+
+    log2Array.push(createImage(log2.src,200,250,50,50));
+    log2Array.push(createImage(log2.src,200,300,50,50));
+    log2Array.push(createImage(log2.src,200,350,50,50));
+    log2Array.push(createImage(log2.src,200,400,50,50));
+    log2Array.push(createImage(log2.src,200,450,50,50));
+
+    log3Array.push(createImage(log2.src,400,250,50,50));
+    log3Array.push(createImage(log2.src,400,300,50,50));
+    log3Array.push(createImage(log2.src,400,350,50,50));
+    log3Array.push(createImage(log2.src,400,400,50,50));
+    log3Array.push(createImage(log2.src,400,450,50,50));
+
+    log4Array.push(createImage(log2.src,600,250,50,50));
+    log4Array.push(createImage(log2.src,600,300,50,50));
+    log4Array.push(createImage(log2.src,600,350,50,50));
+    log4Array.push(createImage(log2.src,600,400,50,50));
+    log4Array.push(createImage(log2.src,600,450,50,50));
+
+}
+
+function drawLogs(){
+    var ctx = document.getElementById("canvas").getContext("2d");
+    for(i=0;i<log1Array.length;i++){
+        ctx.drawImage(log1Array[i],log1Array[i].left,log1Array[i].top,log1Array[i].width,log1Array[i].height);
+        //making sure logs reappear once they disappear
+        if(log1Array[i].left > 650){
+            log1Array[i].left = -200;
+        }
+    }
+    for(i=0;i<log2Array.length;i++){
+        ctx.drawImage(log2Array[i],log2Array[i].left,log2Array[i].top,log2Array[i].width,log2Array[i].height);
+        if(log2Array[i].left > 650){
+            log2Array[i].left = -200;
+        }
+    }
+    for(i=0;i<log3Array.length;i++){
+        ctx.drawImage(log3Array[i],log3Array[i].left,log3Array[i].top,log3Array[i].width,log3Array[i].height);
+        if(log3Array[i].left > 650){
+            log3Array[i].left = -200;
+        }
+    }
+    for(i=0;i<log4Array.length;i++){
+        ctx.drawImage(log4Array[i],log4Array[i].left,log4Array[i].top,log4Array[i].width,log4Array[i].height);
+        if(log4Array[i].left > 650){
+            log4Array[i].left = -200;
+        }
+    }
+}
+
+
+//added to ensure that frog stays within the box, if it leaves the home, shabam you coming back froggy.
+function boundaryCheck() {
+    if(frogPict.left<10 || frogPict.left>650 || frogPict.top>800 || frogPict.top<0){
+        frogPict.left = 300;
+        frogPict.top = 800;
+    }
+}
+
+
+
 
 function createCars() {
     var ctx = document.getElementById("canvas").getContext("2d");
@@ -287,6 +373,38 @@ function createCars() {
 //function createLogs(){
 
 // }
+
+//logs cosas below
+
+var logsMoves = 1.2;
+function moveLogsRight(){
+    var ctx = document.getElementById("canvas").getContext("2d");
+    for(i=0;i<log1Array.length;i++){
+        log1Array[i].left=log1Array[i].left+ logsMoves;
+        ctx.drawImage(log1Array[i],log1Array[i].left,log1Array[i].top,log1Array[i].width,log1Array[i].height);
+    }
+    for(i=0;i<log2Array.length;i++){
+        log2Array[i].left=log2Array[i].left + logsMoves;
+        ctx.drawImage(log2Array[i],log2Array[i].left,log2Array[i].top,log2Array[i].width,log2Array[i].height);
+    }
+    for(i=0;i<log3Array.length;i++){
+        log3Array[i].left=log3Array[i].left + logsMoves;
+        ctx.drawImage(log3Array[i],log3Array[i].left,log3Array[i].top,log3Array[i].width,log3Array[i].height);
+    }
+    for(i=0;i<log4Array.length;i++){
+        log4Array[i].left=log4Array[i].left + logsMoves;
+        ctx.drawImage(log4Array[i],log4Array[i].left,log4Array[i].top,log4Array[i].width,log4Array[i].height);
+    }
+}
+
+// function moveLogsLeft(){
+//     var ctx = document.getElementById("canvas").getContext("2d");
+//     for(i=0;i<log2Array.length;i++){
+//         log2Array[i].left=log2Array[i].left + logsMoves;
+//         ctx.drawImage(log2Array[i],log2Array[i].left,log2Array[i].top,log2Array[i].width,log2Array[i].height);
+//     }
+// }
+
 var carMoves=1;
 function moveCarsRight(){
     var ctx = document.getElementById("canvas").getContext("2d");
@@ -348,14 +466,6 @@ function checkLives(){
     if(lives==0){
         gameOn=false;
         alert("you lost boooooo! Press restart to go again!");
-        //code that makes black screen below
-        var ctx = document.getElementById("canvas").getContext("2d");
-        ctx.fillStyle = "#000000";
-        ctx.fillRect(0,0,650,650);
-        ctx.fillStyle = "#FFFF13";
-        ctx.font = "35px Arial";
-        ctx.fillText("YOU LOSE!", 200, 325);
-        ctx.fillText("CLICK THE RESET BUTTON", 110, 370);
     }
     if (gameOn==false);{
         document.getElementById("restart").disabled=false;
@@ -373,13 +483,38 @@ function restartGame(){
 }
 
 function checkCollisions(p1,p2){
-     if(p1.left+p1.width>p2.left && p1.left<p2.left+p2.width&& p1.top+p1.height>p2.top&& p1.top<p2.top+p2.height&&p1.vis==true && p2.vis==true){
-         frogPict.top = 800;
-         frogPict.left = 300;
-         lives=lives-1;
-         document.getElementById("lives").innerHTML = "Lives Remaining:" + lives;
-         reset();
-     }
+    if(p1.left+p1.width>p2.left && p1.left<p2.left+p2.width&& p1.top+p1.height>p2.top&& p1.top<p2.top+p2.height&&p1.vis==true && p2.vis==true){
+        frogPict.top = 800;
+        frogPict.left = 300;
+        lives=lives-1;
+        document.getElementById("lives").innerHTML = "Lives Remaining:" + lives;
+        reset();
+    }
+}
+
+var waterCollision = true;
+function logCollisionCheck() {
+    var ctx = document.getElementById("canvas").getContext("2d");
+    for (t = 0; t < log1Array.length; t++) {
+        if (frogPict.left + frogPict.width > log1Array[t].left && frogPict.left < log1Array[t].left + log1Array[t].width && frogPict.top + frogPict.height > log1Array[t].top && frogPict.top < log1Array[t].top + log1Array[t].height) {
+            frogPict.left += 1.2;
+            waterCollision = false;
+        }
+        if (frogPict.left + frogPict.width > log2Array[t].left && frogPict.left < log2Array[t].left + log2Array[t].width && frogPict.top + frogPict.height > log2Array[t].top && frogPict.top < log2Array[t].top + array3[t].height) {
+            frogPict.left += 1.2;
+            waterCollision = false;
+        }
+    }
+}
+
+function waterCollisionChecker() {
+    if (waterCollision == true && frogPict.top < 500 && frogPict.top>250) {
+        frogPict.left = 300;
+        frogPict.top = 800;
+        lives-=1;
+        document.getElementById("lives").innerHTML = "Lives Remaining: " + lives;
+
+    }
 }
 
 //this function may be helpful.  You should understand it and be able to make it on your own.
