@@ -186,14 +186,13 @@ function animate() {
         moveCarsRight();
         moveCarsLeft();
         moveLogsRight();
-        // moveLogsLeft();
         checkFrogs();
         checkLives();
         FinishLine();
         drawCars();
         drawLogs();
-        logCollisionCheck();
-        waterCollisionChecker();
+        checkFinish();
+        drawFinishStars();
         // startAnimation();
         for (i = 0; i < car2Array.length; i++) {
             checkRightCars(car2Array[i]);
@@ -224,6 +223,9 @@ function animate() {
         for (i = 0; i < car4Array.length; i++) {
             checkCollisions(frogPict, car4Array[i]);
         }
+
+        logCollisionCheck();
+        waterCollisionChecker();
     }
 
 
@@ -332,11 +334,40 @@ function drawLogs(){
 }
 
 
-//added to ensure that frog stays within the box, if it leaves the home, shabam you coming back froggy.
+//added to ensure that frog stays within the box, froggy back at main.
 function boundaryCheck() {
     if(frogPict.left<10 || frogPict.left>650 || frogPict.top>800 || frogPict.top<0){
         frogPict.left = 300;
         frogPict.top = 800;
+    }
+}
+
+function checkFinish(){
+    //check finish
+    if (frogPict.left > 0 && frogPict.left < 45 && frogPict.top < 45 && frogPict.top < 5) {
+        frog.left = 300;
+        frog.top = 600;
+        drawStar1 = true;
+    }
+}
+
+var drawStar1 = false;
+var drawStar2 = false;
+var drawStar3 = false;
+var drawStar4 = false;
+var starArray = [];
+function drawFinishStars() {
+    if (drawStar1 == true) {
+        starArray.push(createImage("resources/star.png", "starFirst", 45, 5, 55, 50));
+    }
+    if (drawStar2 == true) {
+        starArray.push(createImage("resources/star.png", "starSecond", 195, 5, 55, 50));
+    }
+    if (drawStar3 == true) {
+        starArray.push(createImage("resources/star.png", "starThird", 345, 5, 55, 50));
+    }
+    if (drawStar4 == true) {
+        starArray.push(createImage("resources/star.png", "starFourth", 495, 5, 55, 50));
     }
 }
 
@@ -374,13 +405,13 @@ function createCars() {
 
 // }
 
-//logs cosas below
+//logs below
 
 var logsMoves = 1.2;
 function moveLogsRight(){
     var ctx = document.getElementById("canvas").getContext("2d");
     for(i=0;i<log1Array.length;i++){
-        log1Array[i].left=log1Array[i].left+ logsMoves;
+        log1Array[i].left=log1Array[i].left + logsMoves;
         ctx.drawImage(log1Array[i],log1Array[i].left,log1Array[i].top,log1Array[i].width,log1Array[i].height);
     }
     for(i=0;i<log2Array.length;i++){
@@ -457,8 +488,6 @@ function FinishLine(){
         frogX=300;
         frogY=800;
 
-        console.log(points);
-
     }
 }
 
@@ -499,11 +528,33 @@ function logCollisionCheck() {
         if (frogPict.left + frogPict.width > log1Array[t].left && frogPict.left < log1Array[t].left + log1Array[t].width && frogPict.top + frogPict.height > log1Array[t].top && frogPict.top < log1Array[t].top + log1Array[t].height) {
             frogPict.left += 1.2;
             waterCollision = false;
+
         }
-        if (frogPict.left + frogPict.width > log2Array[t].left && frogPict.left < log2Array[t].left + log2Array[t].width && frogPict.top + frogPict.height > log2Array[t].top && frogPict.top < log2Array[t].top + array3[t].height) {
+
+    }
+
+    for (t = 0; t < log2Array.length; t++) {
+        if (frogPict.left + frogPict.width > log2Array[t].left && frogPict.left < log2Array[t].left + log2Array[t].width && frogPict.top + frogPict.height > log2Array[t].top && frogPict.top < log2Array[t].top + log1Array[t].height) {
             frogPict.left += 1.2;
             waterCollision = false;
         }
+
+    }
+
+    for (t = 0; t < log3Array.length; t++) {
+        if (frogPict.left + frogPict.width > log3Array[t].left && frogPict.left < log3Array[t].left + log3Array[t].width && frogPict.top + frogPict.height > log3Array[t].top && frogPict.top < log3Array[t].top + log3Array[t].height) {
+            frogPict.left += 1.2;
+            waterCollision = false;
+        }
+
+    }
+
+    for (t = 0; t < log4Array.length; t++) {
+        if (frogPict.left + frogPict.width > log4Array[t].left && frogPict.left < log4Array[t].left + log4Array[t].width && frogPict.top + frogPict.height > log4Array[t].top && frogPict.top < log4Array[t].top + log4Array[t].height) {
+            frogPict.left += 1.2;
+            waterCollision = false;
+        }
+
     }
 }
 
